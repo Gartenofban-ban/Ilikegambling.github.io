@@ -18,13 +18,17 @@
         height: 100vh;
         background: linear-gradient(135deg, #c3a3f1, #6414e9);
     }
-    .wheel {
+    .wheel-container {
         position: relative;
         width: 300px;
         height: 300px;
+    }
+    .wheel {
+        position: absolute;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
-        background-color: #f7f7f7;
-        overflow: hidden;
+        background: conic-gradient(#f7f7f7 0 60deg, #d7d7d7 60deg 120deg, #f7f7f7 120deg 180deg, #d7d7d7 180deg 240deg, #f7f7f7 240deg 300deg, #d7d7d7 300deg 360deg);
     }
     .wheel .numbers {
         position: absolute;
@@ -33,19 +37,20 @@
         width: 100%;
         height: 100%;
         transform: translate(-50%, -50%);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
     }
     .wheel .numbers span {
+        position: absolute;
         width: 100%;
         text-align: center;
         font-size: 24px;
-        margin-bottom: 10px;
-        transform-origin: 50% 100%;
-        transition: transform 3s ease-in-out;
+        font-weight: bold;
     }
+    .wheel .numbers span:nth-child(1) { transform: rotate(30deg) translate(0, -140px) rotate(-30deg); }
+    .wheel .numbers span:nth-child(2) { transform: rotate(90deg) translate(0, -140px) rotate(-90deg); }
+    .wheel .numbers span:nth-child(3) { transform: rotate(150deg) translate(0, -140px) rotate(-150deg); }
+    .wheel .numbers span:nth-child(4) { transform: rotate(210deg) translate(0, -140px) rotate(-210deg); }
+    .wheel .numbers span:nth-child(5) { transform: rotate(270deg) translate(0, -140px) rotate(-270deg); }
+    .wheel .numbers span:nth-child(6) { transform: rotate(330deg) translate(0, -140px) rotate(-330deg); }
     #spin-btn {
         margin-top: 20px;
         background-color: #fdcf3b;
@@ -56,39 +61,52 @@
         cursor: pointer;
         border-radius: 5px;
     }
+    .arrow {
+        position: absolute;
+        width: 50px;
+        top: -20px;
+        left: calc(50% - 25px);
+        z-index: 10;
+    }
 </style>
 </head>
 <body>
-<div class="wheel">
-    <div class="numbers">
-        <span style="transform: rotate(0deg)">1</span>
-        <span style="transform: rotate(60deg)">2</span>
-        <span style="transform: rotate(120deg)">3</span>
-        <span style="transform: rotate(180deg)">4</span>
-        <span style="transform: rotate(240deg)">5</span>
-        <span style="transform: rotate(300deg)">6</span>
+<div class="wheel-container">
+    <div class="wheel">
+        <div class="numbers">
+            <span>1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>4</span>
+            <span>5</span>
+            <span>6</span>
+        </div>
     </div>
+    <img class="arrow" src="https://cutewallpaper.org/24/yellow-arrow-png/155564497.jpg" alt="spinner arrow">
 </div>
 <button id="spin-btn">Spin</button>
 
 <script>
     const spinBtn = document.getElementById("spin-btn");
-    const numbers = document.querySelectorAll(".wheel .numbers span");
+    const wheel = document.querySelector(".wheel");
+
+    const numbers = [1, 2, 3, 4, 5, 6];
 
     spinBtn.addEventListener("click", () => {
         const randomIndex = Math.floor(Math.random() * numbers.length);
-        const selectedNumber = numbers[randomIndex].textContent;
+        const selectedNumber = numbers[randomIndex];
         alert(`Selected Number: ${selectedNumber}`);
-        spinWheel(randomIndex);
-    });
 
-    function spinWheel(randomIndex) {
-        const rotationAngle = randomIndex * 60 + 720; // 60 degrees per number, plus additional rotations
-        document.querySelector(".wheel .numbers").style.transform = `rotate(${rotationAngle}deg)`;
         setTimeout(() => {
-            alert(`Wheel Stopped at: ${numbers[randomIndex].textContent}`);
-        }, 3000); // Adjust this delay as needed
-    }
+            const rotationAngle = 360 - (randomIndex * 60 + 30); // Adjust to center the selected number at the top
+            wheel.style.transition = "transform 3s ease-out";
+            wheel.style.transform = `rotate(${rotationAngle + 360 * 3}deg)`; // Spin the wheel 3 full rotations plus the final position
+
+            setTimeout(() => {
+                alert(`Wheel Stopped at: ${selectedNumber}`);
+            }, 3000); // Delay for the spin animation to complete
+        }, 500); // Small delay after the alert
+    });
 </script>
 </body>
 </html>
