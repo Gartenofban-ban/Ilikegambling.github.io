@@ -56,6 +56,7 @@
         border-radius: 5px;
     }
     .arrow {
+        display: none; /* Hide arrow initially */
         position: absolute;
         width: 50px;
         top: 10px;
@@ -80,33 +81,38 @@
         <img class="arrow" src="https://cutewallpaper.org/24/yellow-arrow-png/155564497.jpg" alt="spinner arrow">
         <button id="spin-btn">Spin</button>
     </div>
-    <div id="final-value">
-        <p>Click On The Spin Button To Start</p>
-    </div>
 </div>
 <script>
     const spinBtn = document.getElementById("spin-btn");
-    const finalValue = document.getElementById("final-value");
+    const wheel = document.getElementById("wheel");
 
     // Array of numbers
     const numbers = [1, 2, 3, 4, 5, 6];
-    let rotationValue = 0;
 
-    // Start spinning
+    // Show selected number in popup before spinning
     spinBtn.addEventListener("click", () => {
-        spinBtn.disabled = true;
-        finalValue.innerHTML = `<p>Spinning...</p>`;
         // Generate a random number index
         const randomIndex = Math.floor(Math.random() * numbers.length);
-        // Calculate rotation based on the selected number
-        rotationValue = 360 * randomIndex / numbers.length + 360 * 3; // Rotate 3 full circles before stopping
-        // Apply rotation animation
-        document.getElementById("wheel").style.transform = `rotate(${rotationValue}deg)`;
-        // Show selected number after spinning stops
+        const selectedNumber = numbers[randomIndex];
+        // Show popup with the selected number
+        alert(`Selected Number: ${selectedNumber}`);
+        // Show the arrow
+        document.querySelector(".arrow").style.display = "block";
+        // Hide the spin button
+        spinBtn.style.display = "none";
+        // Start spinning the wheel after dismissing the popup
         setTimeout(() => {
-            finalValue.innerHTML = `<p>Selected Number: ${numbers[randomIndex]}</p>`;
-            spinBtn.disabled = false;
-        }, 4000); // Wait for 4 seconds (3 seconds of spinning + 1 second delay)
+            // Simulate spinning by rotating the wheel
+            wheel.style.transform = `rotate(${360 * randomIndex}deg)`;
+            // Show the spin button again
+            spinBtn.style.display = "block";
+            // Hide the arrow
+            document.querySelector(".arrow").style.display = "none";
+            // Simulate wheel stopping after a delay
+            setTimeout(() => {
+                alert(`Wheel Stopped at: ${selectedNumber}`);
+            }, 3000); // Adjust this delay as needed
+        }, 1000); // Adjust this delay as needed
     });
 </script>
 </body>
