@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spinning Wheel</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
             display: flex;
@@ -41,6 +40,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            color: black;
+            font-weight: bold;
         }
         .segment:nth-child(2n) { background-color: #ffcccb; }
         .segment:nth-child(3n) { background-color: #add8e6; }
@@ -55,9 +56,9 @@
             height: 0;
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
-            border-bottom: 30px solid red;
+            border-top: 30px solid red;
             position: absolute;
-            top: -35px;
+            bottom: -35px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -98,7 +99,7 @@
             // Calculate the rotation
             const selectedSegment = [...Array(segments).keys()].filter(i => numbers[i] === selectedNumber);
             const randomIndex = Math.floor(Math.random() * selectedSegment.length);
-            const rotation = selectedSegment[randomIndex] * (360 / segments) + (360 * 3); // Additional rotations for effect
+            const rotation = 360 - selectedSegment[randomIndex] * (360 / segments) + (360 * 3); // Additional rotations for effect
 
             wheel.style.transition = 'transform 4s ease-out';
             wheel.style.transform = `rotate(${rotation}deg)`;
