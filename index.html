@@ -1,105 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spinning Wheel</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spinning Wheel</title>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+    }
+
+    .wheel-container {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background-color: #fff;
+        overflow: hidden;
+        border: 5px solid #333;
+    }
+
+    .wheel {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transform-origin: center center;
+        animation-name: spin;
+        animation-duration: 3s;
+        animation-timing-function: ease-out;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
         }
-        #wheel-container {
-            position: relative;
-            width: 320px;
-            height: 320px;
+        to {
+            transform: rotate(360deg);
         }
-        #wheel {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 10px solid black;
-            position: relative;
-            overflow: hidden;
-        }
-        .segment {
-            width: 50%;
-            height: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform-origin: 0% 100%;
-            background-color: #f2f2f2;
-            clip-path: polygon(0 0, 100% 0, 50% 100%, 0 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .segment:nth-child(2n) { background-color: #ffcccb; }
-        .segment:nth-child(3n) { background-color: #add8e6; }
-        .segment:nth-child(4n) { background-color: #90ee90; }
-        .segment:nth-child(5n) { background-color: #ffeb3b; }
-        #arrow {
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 30px solid red;
-            position: absolute;
-            top: -35px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
+    }
+
+    .arrow {
+        position: absolute;
+        top: 10px; /* Adjust as needed */
+        left: calc(50% - 5px);
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 20px solid red; /* Changed to point downward */
+        z-index: 10;
+    }
+
+    .number-container {
+        position: absolute;
+        top: calc(50% - 25px);
+        left: calc(50% - 25px);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+        border: 2px solid #333;
+    }
+</style>
 </head>
 <body>
-    <div id="wheel-container">
-        <div id="wheel"></div>
-        <div id="arrow"></div>
-    </div>
-    <button onclick="spinWheel()">Spin the Wheel</button>
+<div class="wheel-container">
+    <div class="wheel"></div>
+    <div class="arrow"></div>
+    <div class="number-container"></div>
+</div>
+<script>
+    const numbers = ["1", "2", "3", "4", "5", "6"];
+    
+    const arrow = document.querySelector('.arrow');
+    const numberContainer = document.querySelector('.number-container');
 
-    <script>
-        const segments = 12;
-        const numbers = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
-        const wheel = document.getElementById('wheel');
+    function spinWheel() {
+        const randomIndex = Math.floor(Math.random() * numbers.length);
+        const selectedNumber = numbers[randomIndex];
 
-        function createWheel() {
-            for (let i = 0; i < segments; i++) {
-                const segment = document.createElement('div');
-                segment.classList.add('segment');
-                segment.style.transform = `rotate(${i * (360 / segments)}deg)`;
-                segment.innerHTML = `<span style="transform: rotate(${(360 / segments) * -i}deg)">${numbers[i]}</span>`;
-                wheel.appendChild(segment);
-            }
-        }
+        numberContainer.textContent = selectedNumber;
 
-        function getWeightedRandomNumber() {
-            const weightedNumbers = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6];
-            const randomIndex = Math.floor(Math.random() * weightedNumbers.length);
-            return weightedNumbers[randomIndex];
-        }
+        const degrees = 360 / numbers.length;
+        const rotation = (randomIndex * degrees) + (degrees / 2);
 
-        function spinWheel() {
-            const selectedNumber = getWeightedRandomNumber();
-            alert(`The selected number is: ${selectedNumber}`);
+        arrow.style.transform = `translateY(-50%) rotate(${rotation}deg)`;
+    }
 
-            const selectedSegment = [...Array(segments).keys()].filter(i => numbers[i] === selectedNumber);
-            const randomIndex = Math.floor(Math.random() * selectedSegment.length);
-            const rotation = 360 - selectedSegment[randomIndex] * (360 / segments) + (360 * 3);
+    spinWheel(); // Initial spin
 
-            wheel.style.transition = 'transform 4s ease-out';
-            wheel.style.transform = `rotate(${rotation}deg)`;
-        }
-
-        createWheel();
-    </script>
+    document.querySelector('.wheel').addEventListener('animationend', spinWheel);
+</script>
 </body>
 </html>
