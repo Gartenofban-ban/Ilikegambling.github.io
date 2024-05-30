@@ -13,6 +13,7 @@
     }
     body {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
@@ -82,11 +83,17 @@
     }
     .arrow-text {
         position: absolute;
-        top: 0;
+        top: -30px;
         left: 50%;
         transform: translateX(-50%);
         font-weight: bold;
         font-size: 20px;
+        color: black;
+    }
+    #result {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
         color: black;
     }
 </style>
@@ -108,11 +115,13 @@
 <button id="spin-btn">Spin</button>
 
 <audio id="jackpot-sound" src="jackpot.mp3"></audio>
+<div id="result"></div>
 
 <script>
     const spinBtn = document.getElementById("spin-btn");
     const wheel = document.querySelector(".wheel");
     const jackpotSound = document.getElementById("jackpot-sound");
+    const result = document.getElementById("result");
 
     const numbers = [1, 2, 3, 4, 5, 6];
     let currentRotation = 0;
@@ -120,7 +129,6 @@
     spinBtn.addEventListener("click", () => {
         const randomIndex = Math.floor(Math.random() * numbers.length);
         const selectedNumber = numbers[randomIndex];
-        alert(`Selected Number: ${selectedNumber}`);
 
         const targetRotation = 360 - (randomIndex * 60); // Adjust to center the selected number
         const rotationsNeeded = 3; // Number of full rotations
@@ -131,7 +139,7 @@
 
         setTimeout(() => {
             jackpotSound.play();
-            alert(`Wheel Stopped at: ${selectedNumber}`);
+            result.textContent = `Selected Number: ${selectedNumber}`;
             currentRotation = totalRotation % 360; // Store the current rotation for future spins
         }, 6000); // Delay for the spin animation to complete
     });
