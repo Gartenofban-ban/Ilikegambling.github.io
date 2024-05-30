@@ -18,7 +18,7 @@
         align-items: center;
         height: 100vh;
         background-image: url('https://images3.memedroid.com/images/UPLOADED276/66083cf3270e0.jpeg');
-        background-size: contain;
+        background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
     }
@@ -129,6 +129,7 @@
     spinBtn.addEventListener("click", () => {
         const randomIndex = Math.floor(Math.random() * numbers.length);
         const selectedNumber = numbers[randomIndex];
+        alert(`Selected Number: ${selectedNumber}`);
 
         const targetRotation = 360 - (randomIndex * 60); // Adjust to center the selected number
         const rotationsNeeded = 3; // Number of full rotations
@@ -140,6 +141,8 @@
         setTimeout(() => {
             jackpotSound.play();
             result.textContent = `Selected Number: ${selectedNumber}`;
+            result.style.color = "red";
+            result.style.fontWeight = "bold";
             currentRotation = totalRotation % 360; // Store the current rotation for future spins
         }, 6000); // Delay for the spin animation to complete
     });
