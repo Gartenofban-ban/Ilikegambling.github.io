@@ -1,31 +1,70 @@
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spin Wheel App</title>
-    <!-- Google Font -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="container">
-        <canvas id="wheel"></canvas>
-        <button id="spin-btn">Spin</button>
-        <img src="https://cutewallpaper.org/24/yellow-arrow-png/155564497.jpg" alt="spinner arrow" />
-      </div>
-      <div id="final-value">
-        <p>Click On The Spin Button To Start</p>
-      </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinning Wheel</title>
+    <style>
+        /* Basic styles for the wheel */
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border: 10px solid black;
+            border-radius: 50%;
+            position: relative;
+        }
+        .segment {
+            width: 50%;
+            height: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform-origin: 0 0;
+            background-color: #f2f2f2;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div id="wheel">
+        <!-- Wheel segments will be dynamically added here -->
     </div>
-    <!-- Chart JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <!-- Chart JS Plugin for displaying text over chart -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.1.0/chartjs-plugin-datalabels.min.js"></script>
-    <!-- Script -->
-    <script src="script.js"></script>
-  </body>
+    <button onclick="spinWheel()">Spin the Wheel</button>
+
+    <script>
+        const segments = 12;
+        const numbers = [1, 2, 3, 4, 5, 6];
+        const wheel = document.getElementById('wheel');
+
+        function createWheel() {
+            for (let i = 0; i < segments; i++) {
+                const segment = document.createElement('div');
+                segment.classList.add('segment');
+                segment.style.transform = `rotate(${i * (360 / segments)}deg) skewY(-30deg)`;
+                wheel.appendChild(segment);
+            }
+        }
+
+        function getWeightedRandomNumber() {
+            const weightedNumbers = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6];
+            const randomIndex = Math.floor(Math.random() * weightedNumbers.length);
+            return weightedNumbers[randomIndex];
+        }
+
+        function spinWheel() {
+            const selectedNumber = getWeightedRandomNumber();
+            alert(`The selected number is: ${selectedNumber}`);
+
+            // Now we need to calculate the rotation
+            const selectedSegment = [...Array(segments).keys()].filter(i => (i % 6) + 1 === selectedNumber);
+            const randomIndex = Math.floor(Math.random() * selectedSegment.length);
+            const rotation = selectedSegment[randomIndex] * (360 / segments) + (360 * 3); // Additional rotations for effect
+
+            wheel.style.transition = 'transform 4s ease-out';
+            wheel.style.transform = `rotate(${rotation}deg)`;
+        }
+
+        createWheel();
+    </script>
+</body>
 </html>
