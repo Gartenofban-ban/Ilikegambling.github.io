@@ -6,6 +6,14 @@
     <title>Spinning Wheel</title>
     <link rel="stylesheet" href="styles.css">
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
         #wheel-container {
             position: relative;
             width: 320px;
@@ -19,7 +27,6 @@
             border: 10px solid black;
             position: relative;
             overflow: hidden;
-            transform: rotate(0deg);
         }
         .segment {
             width: 50%;
@@ -30,22 +37,22 @@
             transform-origin: 0% 100%;
             background-color: #f2f2f2;
             border: 1px solid #ddd;
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            clip-path: polygon(0 0, 100% 0, 50% 100%, 0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .segment:nth-child(2n) { background-color: #ffcccb; }
-        .segment:nth-child(2n+1) { background-color: #add8e6; }
-        .segment:nth-child(3n) { background-color: #90ee90; }
-        .segment:nth-child(4n) { background-color: #ffeb3b; }
+        .segment:nth-child(3n) { background-color: #add8e6; }
+        .segment:nth-child(4n) { background-color: #90ee90; }
+        .segment:nth-child(5n) { background-color: #ffeb3b; }
         .segment span {
             transform: rotate(calc(30deg * var(--i) * -1));
             font-size: 20px;
         }
         #arrow {
-            width: 0; 
-            height: 0; 
+            width: 0;
+            height: 0;
             border-left: 20px solid transparent;
             border-right: 20px solid transparent;
             border-bottom: 30px solid red;
@@ -72,14 +79,14 @@
             for (let i = 0; i < segments; i++) {
                 const segment = document.createElement('div');
                 segment.classList.add('segment');
-                segment.style.transform = `rotate(${i * (360 / segments)}deg) skewY(-60deg)`;
+                segment.style.transform = `rotate(${i * (360 / segments)}deg)`;
                 segment.innerHTML = `<span style="--i:${i}">${numbers[i]}</span>`;
                 wheel.appendChild(segment);
             }
         }
 
         function getWeightedRandomNumber() {
-            const weightedNumbers = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4 , 5, 5, 6, 6];
+            const weightedNumbers = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6];
             const randomIndex = Math.floor(Math.random() * weightedNumbers.length);
             return weightedNumbers[randomIndex];
         }
