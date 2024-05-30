@@ -17,7 +17,6 @@
             position: relative;
             width: 320px;
             height: 320px;
-            margin: 20px auto;
         }
         #wheel {
             width: 100%;
@@ -35,22 +34,18 @@
             left: 50%;
             transform-origin: 0% 100%;
             background-color: #f2f2f2;
-            border: 1px solid #ddd;
             clip-path: polygon(0 0, 100% 0, 50% 100%, 0 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: black;
             font-weight: bold;
+            font-size: 20px;
         }
         .segment:nth-child(2n) { background-color: #ffcccb; }
         .segment:nth-child(3n) { background-color: #add8e6; }
         .segment:nth-child(4n) { background-color: #90ee90; }
         .segment:nth-child(5n) { background-color: #ffeb3b; }
-        .segment span {
-            transform: rotate(calc(30deg * var(--i) * -1));
-            font-size: 20px;
-        }
         #arrow {
             width: 0;
             height: 0;
@@ -58,7 +53,7 @@
             border-right: 20px solid transparent;
             border-top: 30px solid red;
             position: absolute;
-            bottom: -35px;
+            top: -35px;
             left: 50%;
             transform: translateX(-50%);
         }
@@ -81,7 +76,7 @@
                 const segment = document.createElement('div');
                 segment.classList.add('segment');
                 segment.style.transform = `rotate(${i * (360 / segments)}deg)`;
-                segment.innerHTML = `<span style="--i:${i}">${numbers[i]}</span>`;
+                segment.innerHTML = `<span style="transform: rotate(${(360 / segments) * -i}deg)">${numbers[i]}</span>`;
                 wheel.appendChild(segment);
             }
         }
@@ -96,10 +91,9 @@
             const selectedNumber = getWeightedRandomNumber();
             alert(`The selected number is: ${selectedNumber}`);
 
-            // Calculate the rotation
             const selectedSegment = [...Array(segments).keys()].filter(i => numbers[i] === selectedNumber);
             const randomIndex = Math.floor(Math.random() * selectedSegment.length);
-            const rotation = 360 - selectedSegment[randomIndex] * (360 / segments) + (360 * 3); // Additional rotations for effect
+            const rotation = 360 - selectedSegment[randomIndex] * (360 / segments) + (360 * 3);
 
             wheel.style.transition = 'transform 4s ease-out';
             wheel.style.transform = `rotate(${rotation}deg)`;
