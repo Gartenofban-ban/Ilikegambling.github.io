@@ -16,7 +16,10 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background: linear-gradient(135deg, #c3a3f1, #6414e9);
+        background-image: url('https://images3.memedroid.com/images/UPLOADED276/66083cf3270e0.jpeg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
     }
     .wheel-container {
         position: relative;
@@ -28,30 +31,45 @@
         width: 100%;
         height: 100%;
         border-radius: 50%;
-        background: conic-gradient(#f7f7f7 0 60deg, #d7d7d7 60deg 120deg, #f7f7f7 120deg 180deg, #d7d7d7 180deg 240deg, #f7f7f7 240deg 300deg, #d7d7d7 300deg 360deg);
+        background: conic-gradient(
+            #f7f7f7 0 60deg, 
+            #d7d7d7 60deg 120deg, 
+            #f7f7f7 120deg 180deg, 
+            #d7d7d7 180deg 240deg, 
+            #f7f7f7 240deg 300deg, 
+            #d7d7d7 300deg 360deg
+        );
     }
     .wheel .numbers {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 100%;
-        height: 100%;
+        width: 80%;
+        height: 80%;
         transform: translate(-50%, -50%);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
     }
     .wheel .numbers span {
         position: absolute;
-        width: 100%;
-        text-align: center;
-        font-size: 24px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
         font-weight: bold;
-        transform-origin: center 150px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.8);
     }
-    .wheel .numbers span:nth-child(1) { transform: rotate(30deg) translateY(-130px) rotate(-30deg); }
-    .wheel .numbers span:nth-child(2) { transform: rotate(90deg) translateY(-130px) rotate(-90deg); }
-    .wheel .numbers span:nth-child(3) { transform: rotate(150deg) translateY(-130px) rotate(-150deg); }
-    .wheel .numbers span:nth-child(4) { transform: rotate(210deg) translateY(-130px) rotate(-210deg); }
-    .wheel .numbers span:nth-child(5) { transform: rotate(270deg) translateY(-130px) rotate(-270deg); }
-    .wheel .numbers span:nth-child(6) { transform: rotate(330deg) translateY(-130px) rotate(-330deg); }
+    .wheel .numbers span:nth-child(1) { transform: rotate(30deg) translateY(-120px) rotate(-30deg); }
+    .wheel .numbers span:nth-child(2) { transform: rotate(90deg) translateY(-120px) rotate(-90deg); }
+    .wheel .numbers span:nth-child(3) { transform: rotate(150deg) translateY(-120px) rotate(-150deg); }
+    .wheel .numbers span:nth-child(4) { transform: rotate(210deg) translateY(-120px) rotate(-210deg); }
+    .wheel .numbers span:nth-child(5) { transform: rotate(270deg) translateY(-120px) rotate(-270deg); }
+    .wheel .numbers span:nth-child(6) { transform: rotate(330deg) translateY(-120px) rotate(-330deg); }
     #spin-btn {
         margin-top: 20px;
         background-color: #fdcf3b;
@@ -62,12 +80,14 @@
         cursor: pointer;
         border-radius: 5px;
     }
-    .arrow {
+    .arrow-text {
         position: absolute;
-        width: 50px;
-        top: -20px;
-        left: calc(50% - 25px);
-        z-index: 10;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: bold;
+        font-size: 20px;
+        color: black; /* Changed color to black */
     }
 </style>
 </head>
@@ -83,7 +103,7 @@
             <span>6</span>
         </div>
     </div>
-    <img class="arrow" src="https://cutewallpaper.org/24/yellow-arrow-png/155564497.jpg" alt="spinner arrow">
+    <div class="arrow-text">Pretend arrow is here and this wheel actually worked which it does</div> <!-- Changed text -->
 </div>
 <button id="spin-btn">Spin</button>
 
@@ -92,21 +112,24 @@
     const wheel = document.querySelector(".wheel");
 
     const numbers = [1, 2, 3, 4, 5, 6];
+    let currentRotation = 0;
 
     spinBtn.addEventListener("click", () => {
         const randomIndex = Math.floor(Math.random() * numbers.length);
         const selectedNumber = numbers[randomIndex];
         alert(`Selected Number: ${selectedNumber}`);
 
-        setTimeout(() => {
-            const rotationAngle = 360 - (randomIndex * 60 + 30); // Adjust to center the selected number at the top
-            wheel.style.transition = "transform 3s ease-out";
-            wheel.style.transform = `rotate(${rotationAngle + 360 * 3}deg)`; // Spin the wheel 3 full rotations plus the final position
+        const targetRotation = 360 - (randomIndex * 60); // Adjust to center the selected number
+        const rotationsNeeded = 3; // Number of full rotations
+        const totalRotation = currentRotation + (360 * rotationsNeeded) - targetRotation; // Adjust rotation direction
 
-            setTimeout(() => {
-                alert(`Wheel Stopped at: ${selectedNumber}`);
-            }, 3000); // Delay for the spin animation to complete
-        }, 500); // Small delay after the alert
+        wheel.style.transition = "transform 6s cubic-bezier(0.25, 0.1, 0.25, 1)";
+        wheel.style.transform = `rotate(${totalRotation}deg)`;
+
+        setTimeout(() => {
+            alert(`Wheel Stopped at: ${selectedNumber}`);
+            currentRotation = totalRotation % 360; // Store the current rotation for future spins
+        }, 6000); // Delay for the spin animation to complete
     });
 </script>
 </body>
