@@ -6,14 +6,20 @@
     <title>Spinning Wheel</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* styles.css */
+        #wheel-container {
+            position: relative;
+            width: 320px;
+            height: 320px;
+            margin: 20px auto;
+        }
         #wheel {
-            width: 300px;
-            height: 300px;
-            border: 10px solid black;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
+            border: 10px solid black;
             position: relative;
             overflow: hidden;
+            transform: rotate(0deg);
         }
         .segment {
             width: 50%;
@@ -29,14 +35,32 @@
             align-items: center;
             justify-content: center;
         }
+        .segment:nth-child(2n) { background-color: #ffcccb; }
+        .segment:nth-child(2n+1) { background-color: #add8e6; }
+        .segment:nth-child(3n) { background-color: #90ee90; }
+        .segment:nth-child(4n) { background-color: #ffeb3b; }
         .segment span {
             transform: rotate(calc(30deg * var(--i) * -1));
             font-size: 20px;
         }
+        #arrow {
+            width: 0; 
+            height: 0; 
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 30px solid red;
+            position: absolute;
+            top: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 </head>
 <body>
-    <div id="wheel"></div>
+    <div id="wheel-container">
+        <div id="wheel"></div>
+        <div id="arrow"></div>
+    </div>
     <button onclick="spinWheel()">Spin the Wheel</button>
 
     <script>
@@ -55,7 +79,7 @@
         }
 
         function getWeightedRandomNumber() {
-            const weightedNumbers = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 5, 6];
+            const weightedNumbers = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4, 4 , 5, 5, 6, 6];
             const randomIndex = Math.floor(Math.random() * weightedNumbers.length);
             return weightedNumbers[randomIndex];
         }
@@ -64,7 +88,7 @@
             const selectedNumber = getWeightedRandomNumber();
             alert(`The selected number is: ${selectedNumber}`);
 
-            // Now we need to calculate the rotation
+            // Calculate the rotation
             const selectedSegment = [...Array(segments).keys()].filter(i => numbers[i] === selectedNumber);
             const randomIndex = Math.floor(Math.random() * selectedSegment.length);
             const rotation = selectedSegment[randomIndex] * (360 / segments) + (360 * 3); // Additional rotations for effect
