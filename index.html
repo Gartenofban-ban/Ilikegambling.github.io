@@ -12,6 +12,7 @@
             border: 10px solid black;
             border-radius: 50%;
             position: relative;
+            overflow: hidden;
         }
         .segment {
             width: 50%;
@@ -19,16 +20,15 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform-origin: 0 0;
+            transform-origin: 0% 100%;
             background-color: #f2f2f2;
             border: 1px solid #ddd;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
         }
     </style>
 </head>
 <body>
-    <div id="wheel">
-        <!-- Wheel segments will be dynamically added here -->
-    </div>
+    <div id="wheel"></div>
     <button onclick="spinWheel()">Spin the Wheel</button>
 
     <script>
@@ -40,7 +40,7 @@
             for (let i = 0; i < segments; i++) {
                 const segment = document.createElement('div');
                 segment.classList.add('segment');
-                segment.style.transform = `rotate(${i * (360 / segments)}deg) skewY(-30deg)`;
+                segment.style.transform = `rotate(${i * (360 / segments)}deg) skewY(-60deg)`;
                 wheel.appendChild(segment);
             }
         }
