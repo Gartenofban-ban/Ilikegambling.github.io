@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spinning Wheel</title>
+<title>Customized Spin Wheel</title>
 <style>
     * {
         padding: 0;
@@ -87,7 +87,7 @@
         transform: translateX(-50%);
         font-weight: bold;
         font-size: 20px;
-        color: black; /* Changed color to black */
+        color: black;
     }
 </style>
 </head>
@@ -103,13 +103,16 @@
             <span>6</span>
         </div>
     </div>
-    <div class="arrow-text">Pretend arrow is here and this wheel actually worked which it does sort of</div> <!-- Changed text -->
+    <div class="arrow-text">Pretend arrow is here and this wheel actually worked</div>
 </div>
 <button id="spin-btn">Spin</button>
+
+<audio id="jackpot-sound" src="jackpot.mp3"></audio>
 
 <script>
     const spinBtn = document.getElementById("spin-btn");
     const wheel = document.querySelector(".wheel");
+    const jackpotSound = document.getElementById("jackpot-sound");
 
     const numbers = [1, 2, 3, 4, 5, 6];
     let currentRotation = 0;
@@ -127,6 +130,7 @@
         wheel.style.transform = `rotate(${totalRotation}deg)`;
 
         setTimeout(() => {
+            jackpotSound.play();
             alert(`Wheel Stopped at: ${selectedNumber}`);
             currentRotation = totalRotation % 360; // Store the current rotation for future spins
         }, 6000); // Delay for the spin animation to complete
